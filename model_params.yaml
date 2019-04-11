@@ -1,0 +1,21 @@
+data_params:
+    need_normalize: True
+    mat_file: 'DC_motor_simulation/res.mat'
+    leave_nth: 13 #KD: choosing simple value to avoid systematic error
+    test_size: 0.3
+network_params:
+    input_size: 128
+# If `per_element` is True, then LSTM reads in one timestep at a time.
+    per_element: True
+# size of hidden layers
+    h1: 16
+    output_dim: 1
+    num_layers: 2
+    dtype: torch.float
+train_params:
+    learning_rate: 0.001
+    num_epochs: 15
+    batch_size:  512
+    loss_fn: mse
+    reduction: mean
+    optimizer: adam
