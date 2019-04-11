@@ -8,7 +8,7 @@ network_params:
 # If `per_element` is True, then LSTM reads in one timestep at a time.
     per_element: True
 # size of hidden layers
-    h1: 16
+    hidden_size: 16
     output_dim: 1
     num_layers: 2
     dtype: torch.float
@@ -19,3 +19,4 @@ train_params:
     loss_fn: mse
     reduction: mean
     optimizer: adam
+exp_path: "only_batches"
