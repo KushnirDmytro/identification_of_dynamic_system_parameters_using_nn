@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated />
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="933e17a0-a37c-43ed-97d0-3a8e7fdf95c8" name="Default Changelist" comment="Matlab:&#10;-- better accuracy of data recorded to file&#10;&#10;Python:&#10;-- added dropping values from initial timeseries (to sparcify)&#10;-- plotting improved (x-skale wider)&#10;-- added evaluation on test part of data">
+      <change afterPath="$PROJECT_DIR$/.idea/identification_of_dynamic_system_parameters_using_nn.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/batchLoader.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lstm_multi_outputs.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DC_motor_simulation/res.mat" beforeDir="false" afterPath="$PROJECT_DIR$/DC_motor_simulation/res.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dzv_example_train.py" beforeDir="false" afterPath="$PROJECT_DIR$/dzv_example_train.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lstm_batches_on_dataloader.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/lstm_batches_on_dataloader.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_params.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/model_params.yaml" afterDir="false" />
+    </list>
+    <ignored path=".idea/" />
+    <ignored path="../../../../data/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="1" selection-start-line="1" selection-end-line="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/__init__.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lstm_batches_on_dataloader.ipynb">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/dzv_example_train.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="1" selection-start-line="1" selection-end-line="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/requirements.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1515">
+              <caret line="101" column="12" selection-start-line="101" selection-start-column="12" selection-end-line="101" selection-end-column="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>learn</find>
+      <find>loss</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="UPDATE_TYPE" value="REBASE" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/dummy.txt" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/lstm_batches_on_dataloader.ipynb" />
+        <option value="$PROJECT_DIR$/dzv_example_train.py" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="61" />
+    <option name="y" value="-4" />
+    <option name="width" value="1859" />
+    <option name="height" value="1084" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="identification_of_dynamic_system_parameters_using_nn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="identification_of_dynamic_system_parameters_using_nn" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/lstms_current_best.ipynb" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="933e17a0-a37c-43ed-97d0-3a8e7fdf95c8" name="Default Changelist" comment="" />
+      <created>1554408874244</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1554408874244</updated>
+      <workItem from="1554408875393" duration="35000" />
+      <workItem from="1554408984584" duration="28464000" />
+      <workItem from="1555062643507" duration="940000" />
+      <workItem from="1555063716303" duration="198000" />
+      <workItem from="1555064045720" duration="8762000" />
+      <workItem from="1555661768685" duration="2331000" />
+    </task>
+    <task id="LOCAL-00001" summary="init commit">
+      <created>1554409473206</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1554409473206</updated>
+    </task>
+    <task id="LOCAL-00002" summary="added initial state of a project documents">
+      <created>1554409778809</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1554409778809</updated>
+    </task>
+    <task id="LOCAL-00003" summary="ARIMA model fitted best for now">
+      <created>1554416085478</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1554416085478</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Added ARIMA model example&#10;added normalisation from sklearn&#10;added reading from files&#10;requirements.txt updated&#10;simulation update is cosmetic">
+      <created>1554453446308</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1554453446308</updated>
+    </task>
+    <task id="LOCAL-00005" summary="fixed model, now handles predictions accurately">
+      <created>1554462710911</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1554462710911</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Matlab:&#10;-- new sequence, now random values, but const timesteps&#10;-- removed scalar for uniscale logging (instead normalize in python)&#10;&#10;Python:&#10;-- added residuals plotting with series, uniscale">
+      <created>1554474162470</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1554474162470</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Matlab:&#10;-- better accuracy of data recorded to file&#10;&#10;Python:&#10;-- added dropping values from initial timeseries (to sparcify)&#10;-- plotting improved (x-skale wider)&#10;-- added evaluation on test part of data">
+      <created>1554479346171</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1554479346171</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Python:&#10;-- Testing procedure added into training loop">
+      <created>1554545956175</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1554545956175</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Matlab:&#10;-- provided random signal for randomized periods generation&#10;&#10;Python:">
+      <created>1554668549549</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1554668549549</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Matlab:&#10;--&#10;&#10;Python:&#10;-- added batching&#10;-- reformated training process&#10;-- added smooth plotter">
+      <created>1554759355530</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1554759355530</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Matlab:&#10;--&#10;&#10;Python:&#10;-- added data loader instead of explicit data operations">
+      <created>1554980817166</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1554980817166</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Matlab:&#10;--&#10;&#10;Python:&#10;-- resolved bug with dimentions of batched data&#10;-- created separate notebook for branching work progress">
+      <created>1554987861612</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1554987861612</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Matlab:&#10;--&#10;&#10;Python:&#10;-- added eval_on_test and eval_on_train parts of training process">
+      <created>1554991235641</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1554991235641</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Matlab:&#10;-- &#10;&#10;Python:&#10;-- parametrization with yaml file, instead of explicit hardcoding">
+      <created>1554993603095</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1554993603095</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Matlab:&#10;-- &#10;&#10;Python:&#10;-- logger to files added">
+      <created>1554997694376</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1554997694376</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Matlab:&#10;-- added source of white noise&#10;&#10;Python:&#10;-- logger instructions&#10;-- requirements.txt updated">
+      <created>1555065830918</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1555065830918</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="40730000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="61" y="-4" width="1859" height="1084" extended-state="6" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26420298" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Messages" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Database Changes" order="7" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32846716" />
+      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.31294596" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Python Console" order="12" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Database" order="3" />
+      <window_info anchor="right" id="SciView" order="4" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="init commit" />
+    <MESSAGE value="added initial state of a project documents" />
+    <MESSAGE value="ARIMA model fitted best for now" />
+    <MESSAGE value="Added ARIMA model example&#10;added normalisation from sklearn&#10;added reading from files&#10;requirements.txt updated&#10;simulation update is cosmetic" />
+    <MESSAGE value="fixed model, now handles predictions accurately" />
+    <MESSAGE value="Matlab:&#10;-- new sequence, now random values, but const timesteps&#10;-- removed scalar for uniscale logging (instead normalize in python)&#10;&#10;Python:&#10;-- added residuals plotting with series, uniscale" />
+    <MESSAGE value="Matlab:&#10;-- better accuracy of data recorded to file&#10;&#10;Python:&#10;-- added dropping values from initial timeseries (to sparcify)&#10;-- plotting improved (x-skale wider)&#10;-- added evaluation on test part of data" />
+    <MESSAGE value="Python:&#10;-- Testing procedure added into training loop" />
+    <MESSAGE value="Matlab:&#10;-- provided random signal for randomized periods generation&#10;&#10;Python:" />
+    <MESSAGE value="Matlab:&#10;--&#10;&#10;Python:&#10;-- added batching&#10;-- reformated training process&#10;-- added smooth plotter" />
+    <MESSAGE value="Matlab:&#10;--&#10;&#10;Python:&#10;-- added data loader instead of explicit data operations" />
+    <MESSAGE value="Matlab:&#10;--&#10;&#10;Python:&#10;-- resolved bug with dimentions of batched data&#10;-- created separate notebook for branching work progress" />
+    <MESSAGE value="Matlab:&#10;--&#10;&#10;Python:&#10;-- added eval_on_test and eval_on_train parts of training process" />
+    <MESSAGE value="Matlab:&#10;-- &#10;&#10;Python:&#10;-- parametrization with yaml file, instead of explicit hardcoding" />
+    <MESSAGE value="Matlab:&#10;-- &#10;&#10;Python:&#10;-- logger to files added" />
+    <MESSAGE value="Matlab:&#10;-- added source of white noise&#10;&#10;Python:&#10;-- logger instructions&#10;-- requirements.txt updated" />
+    <option name="LAST_COMMIT_MESSAGE" value="Matlab:&#10;-- added source of white noise&#10;&#10;Python:&#10;-- logger instructions&#10;-- requirements.txt updated" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/dummy.txt" />
+    <entry file="file://$PROJECT_DIR$/env.txt" />
+    <entry file="file://$PROJECT_DIR$/lstms_current_best.ipynb" />
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lstm_batches_on_dataloader.ipynb">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1515">
+          <caret line="101" column="12" selection-start-line="101" selection-start-column="12" selection-end-line="101" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dzv_example_train.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

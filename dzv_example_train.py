@@ -15,7 +15,6 @@ import datetime
 import yaml
 from models.model import EncoderRNN, DecoderRNN, AttnDecoderRNN
 
-
 #ToDo: add beam search
 
 random.seed(42)

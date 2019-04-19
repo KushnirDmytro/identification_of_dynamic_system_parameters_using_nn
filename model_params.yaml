@@ -4,7 +4,9 @@ data_params:
     leave_nth: 13 #KD: choosing simple value to avoid systematic error
     test_size: 0.3
 network_params:
-    input_size: 128
+    #input_size: 128
+    input_size: 64
+    retrospective_steps: 64
 # If `per_element` is True, then LSTM reads in one timestep at a time.
     per_element: True
 # size of hidden layers
@@ -13,10 +15,10 @@ network_params:
     num_layers: 2
     dtype: torch.float
 train_params:
-    learning_rate: 0.001
+    learning_rate: 0.01
     num_epochs: 15
-    batch_size:  512
+    batch_size:  128
     loss_fn: mse
-    reduction: mean
+    reduction: sum
     optimizer: adam
 exp_path: "only_batches"
