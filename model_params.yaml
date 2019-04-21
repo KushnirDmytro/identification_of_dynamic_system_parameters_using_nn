@@ -22,3 +22,10 @@ train_params:
     reduction: sum
     optimizer: adam
 exp_path: "only_batches"
+is_debug: False
+to_generate_data: True
+generator_params:
+    a: -1
+    f_X: "math.sin"
+    f_Y: "math.cos"
+        
