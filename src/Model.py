@@ -20,7 +20,6 @@ class LSTM(nn.Module):
         self.lstm = nn.LSTM(self.input_dim, self.hidden_dim, self.num_layers)
 
         # Define the output layer
-        output_dim = 2
         self.linear = nn.Linear(self.hidden_dim, output_dim)
 
     def init_hidden(self):

@@ -5,7 +5,7 @@ import h5py
 import torch
 from torch.utils.data import Dataset, DataLoader, SequentialSampler
 import sklearn.preprocessing 
-from src.TSGenerator import f_Y, f_X, dY_dt, f_X_inv, get_func_timeseries
+from src.TSGenerator import f_Y, f_X, dY_dx, get_func_timeseries
 
 class TimeSeriesDataset(Dataset):
     """Loads dataset from matlab file and provides batching interface"""
@@ -27,28 +27,32 @@ class TimeSeriesDataset(Dataset):
         # TODO asserts and validations of provided params
         to_generate_data = config['to_generate_data']
         p_data = config['data_params']
-        mat_file=p_data['mat_file']
-        retrospective_steps=config['network_params']['retrospective_steps']
-        need_normalize=p_data['need_normalize']
-        leave_nth=p_data['leave_nth']
+        mat_file = p_data['mat_file']
+        p_net = config['network_params']
+        retrospective_steps = p_net['retrospective_steps']
+        out_dim = p_net['output_dim']
+        need_normalize = p_data['need_normalize']
+        leave_nth = p_data['leave_nth']
         if to_generate_data:
-            x, y = get_func_timeseries(f_Y = f_Y, f_X = f_X)
+            p_generate = config['generator_params']
+            a = p_generate['a']
+            b = p_generate['b']
+            x, y = get_func_timeseries(f_Y=f_Y, f_X=f_X, a=a, b=b)
         else:
-            mat_file = config['data_params']['mat_file']
             outfile = h5py.File(mat_file, 'r')
-            #print(outfile.keys())
-            self.data  = outfile['ans']
+            self.data = outfile['ans']
             time, x, y = self.data[::leave_nth, 0], self.data[::leave_nth, 1], self.data[::leave_nth, 2]
-        need_normalize = False
+
         if need_normalize:
-            x_normalized, self.x_norms = sklearn.preprocessing.normalize(x.reshape(-1,1),
-                                                      axis = 0,
-                                                      norm = 'max',
-                                                      return_norm = True)
-            y_normalized, self.y_norms = sklearn.preprocessing.normalize(y.reshape(-1,1),
-                                                      axis = 0,
-                                                      norm = 'max', 
-                                                      return_norm = True)
+            x_normalized, self.x_norms = sklearn.preprocessing.normalize(x.reshape(-1, 1),
+                                                                         axis=0,
+                                                                         norm='max',
+                                                                         return_norm=True)
+
+            y_normalized, self.y_norms = sklearn.preprocessing.normalize(y.reshape(-1, 1),
+                                                                         axis=0,
+                                                                         norm='max',
+                                                                         return_norm=True)
             x = x_normalized
             y = y_normalized
 #             y = y.reshape(-1,1)
@@ -65,7 +69,7 @@ class TimeSeriesDataset(Dataset):
         for i in range(1,retrospective_steps+1):
             x_sliding.append(x[i:-(retrospective_steps+1-i)])
         y = y[retrospective_steps+1:]
-        y = np.hstack([y,y])
+        y = np.hstack([y] * out_dim)
         print(f"stacked Y shape  {y.shape}")
         self.x = torch.from_numpy(np.array(x_sliding)).type(torch.Tensor)
         self.y = torch.from_numpy(y).type(torch.Tensor)

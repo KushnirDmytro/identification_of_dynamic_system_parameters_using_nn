@@ -1,22 +1,22 @@
 data_params:
-    need_normalize: True
+    need_normalize: False
     mat_file: 'DC_motor_simulation/res.mat'
     leave_nth: 13 #KD: choosing simple value to avoid systematic error
     test_size: 0.3
 network_params:
     #input_size: 128
     input_size: 64
-    retrospective_steps: 64
+    retrospective_steps: 128
 # If `per_element` is True, then LSTM reads in one timestep at a time.
     per_element: True
 # size of hidden layers
     hidden_size: 16
-    output_dim: 1
+    output_dim: 3
     num_layers: 2
     dtype: torch.float
 train_params:
     learning_rate: 0.01
-    num_epochs: 15
+    num_epochs: 40
     batch_size:  128
     loss_fn: mse
     reduction: sum
@@ -25,7 +25,8 @@ exp_path: "only_batches"
 is_debug: False
 to_generate_data: True
 generator_params:
-    a: -1
+    a: -4
+    b: -10
     f_X: "math.sin"
     f_Y: "math.cos"
         
