@@ -44,15 +44,30 @@ class TimeSeriesDataset(Dataset):
             time, x, y = self.data[::leave_nth, 0], self.data[::leave_nth, 1], self.data[::leave_nth, 2]
 
         if need_normalize:
+
+
             x_normalized, self.x_norms = sklearn.preprocessing.normalize(x.reshape(-1, 1),
                                                                          axis=0,
                                                                          norm='max',
                                                                          return_norm=True)
-
+            print(f"X normalized, norms: {self.x_norms}")
+            print(f"x shaoe {x.shape}")
+            print(f"x_normalized shaoe {x_normalized.shape}")
+            x2 = x.reshape(-1, 1)
+            print(f'test {x2.shape}')
+            plt.plot(x)
+            plt.title('x original')
+            plt.show()
+            plt.plot(x_normalized)
+            plt.title('normalized x')
+            plt.show()
             y_normalized, self.y_norms = sklearn.preprocessing.normalize(y.reshape(-1, 1),
                                                                          axis=0,
                                                                          norm='max',
                                                                          return_norm=True)
+
+            print(f"Y normalized, norms: {self.y_norms}")
+
             x = x_normalized
             y = y_normalized
 #             y = y.reshape(-1,1)
@@ -68,7 +83,7 @@ class TimeSeriesDataset(Dataset):
         x_sliding = []  # determines number of steps for retrospective view
         for i in range(1,retrospective_steps+1):
             x_sliding.append(x[i:-(retrospective_steps+1-i)])
-        y = y[retrospective_steps+1:]
+        y = y[retrospective_steps:]
         y = np.hstack([y] * out_dim)
         print(f"stacked Y shape  {y.shape}")
         self.x = torch.from_numpy(np.array(x_sliding)).type(torch.Tensor)

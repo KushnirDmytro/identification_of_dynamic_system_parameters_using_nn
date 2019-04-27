@@ -1,8 +1,9 @@
 data_params:
-    need_normalize: False
+    need_normalize: True
     mat_file: 'DC_motor_simulation/res.mat'
     leave_nth: 13 #KD: choosing simple value to avoid systematic error
     test_size: 0.3
+    use_part_of_data: 1.0
 network_params:
     #input_size: 128
     input_size: 64
@@ -15,18 +16,18 @@ network_params:
     num_layers: 2
     dtype: torch.float
 train_params:
-    learning_rate: 0.01
-    num_epochs: 40
-    batch_size:  128
+    learning_rate: 0.001
+    num_epochs: 15
+    batch_size: 1024
     loss_fn: mse
     reduction: sum
     optimizer: adam
 exp_path: "only_batches"
 is_debug: False
-to_generate_data: True
+to_generate_data: False
 generator_params:
-    a: -4
-    b: -10
+    a: 0.5
+    b: 1.0
     f_X: "math.sin"
     f_Y: "math.cos"
         

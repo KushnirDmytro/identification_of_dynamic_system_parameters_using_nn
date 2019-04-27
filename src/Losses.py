@@ -5,129 +5,108 @@ from src.TSGenerator import f_Y, f_X, dY_dx , get_func_timeseries, f_X_inv, f_X_
 from src.model_utils import init_logger, plot_shared_scale, plot_multiscale
 
 
-def aux_loss(mult_par, adit_par, outputs, x_batch, config):
-    batch_size = outputs.size()[0]  
-    is_debug = config['is_debug']
-    is_generated = config['to_generate_data']
-    p_gen = config['generator_params']
-    a = p_gen['a']
-    # f2_arg = f_X_inv(x_batch[-1])
-    f2_arg = x_batch[-1]
-#     print(f"X shape: {f2_arg.shape}")
-#     print(f"Y shape {outputs.shape}")
-    f2_arg_k_minus_1 = f2_arg.narrow(0, 1, f2_arg.shape[0] - 1)
-    f2_arg_k_minus_2 = f2_arg.narrow(0, 0, f2_arg.shape[0] - 1)
-    # f2_arg_k_minus_1 = f2_arg.narrow(0, 1, f2_arg.shape[0] - 1)
-#     print(f"f2_arg_k_m1 shape: {f2_arg_k_minus_1.shape}")
+def prognose_dy(par):
+    y_k_m1 = par['y_k_m1']
+    v_a = par['v_a']
+    La = par['La']
+    Ra = par['Ra']
+    Kt = par['Kt']
+    Kb = par['Kt']
+    d_t = par['d_t']
 
-    # t_range = np.arange( 0, math.pi * 100, math.pi / 30)
-    # x_range = f_X_torch(torch.from_numpy(t_range).type(torch.Tensor))
+    i_k_m1 = y_k_m1 / Kt  # restoring estimates from observable state y_k_m1
 
-    # print(f" created X {x_range.shape}")
+    e_k_m1 = i_k_m1 * Kt * Kb  # EMF
 
-    dX = x_batch[-1].narrow(0, 1, batch_size -1) - (x_batch[-1].narrow(0, 1, batch_size -1) + x_batch[-1].narrow(0, 0, batch_size-1)) / 2
-    f2_mean_drop = (f2_arg_k_minus_1 + f2_arg_k_minus_1) / 2
+    di_dt = (v_a - e_k_m1 - i_k_m1 * Ra)/La  # current change
 
-    dY = dY_dx(a=mult_par, b=adit_par, x=f2_mean_drop) * dX
+    i_k = i_k_m1 + di_dt * d_t  # resulting estimate of current
+    y_k = i_k * Kt  # resulting  torque
+    d_y = y_k - y_k_m1
 
-    y_k_minus_1 = outputs[:, 0].narrow(0, 0, batch_size - 1).view((batch_size - 1, -1))
-    
-    y_k_hat = y_k_minus_1 + dY
-    y_k = outputs[:, 0].narrow(0, 1, batch_size-1).view((batch_size-1, -1))
-    error_mul = y_k_hat - y_k
-    error_mul = torch.abs(error_mul)
-    error_mul = torch.sum(error_mul)
-
-    error_aux = 0
-    error_aux += error_mul
-
-    # forsing const:
-    if not is_debug:
-        const_mul = torch.sum(torch.abs(mult_par.narrow(0, 0, mult_par.shape[0] - 1) - mult_par.narrow(0, 1, mult_par.shape[0] - 1)))
-        error_aux += const_mul
-        const_adit = torch.sum(torch.abs(adit_par.narrow(0, 0, adit_par.shape[0] - 1) - adit_par.narrow(0, 1, adit_par.shape[0] - 1)))
-        error_aux += const_adit
-
-    if is_debug:
-        print(y_k_minus_1.shape)
-        print(y_k_hat.shape)
-        print(dY.shape)
-        print(y_k.shape)
-        proper_dy = (y_k - y_k_minus_1).view((batch_size - 1, -1))
-        print(proper_dy.shape)
-        plot_shared_scale([
-    #         (f2_arg_k_minus_1.detach().numpy(), "T"),
-    #             (y_k_minus_1.detach().numpy(),"Y_k_minus1" ),
-    #              (y_k_hat.detach().numpy(), "Y_k"),
-            (f2_arg_k_minus_1.detach().numpy()/10, "T"),
-                (proper_dy.detach().numpy(), "dY"),
-                 (dY.detach().numpy(), "dY_hat")
-        ])
-   
-    return error_aux
+    return d_y
 
 
 
 def myLoss(outputs, labels, x_batch, config):
-    is_debug = config['is_debug']
-    is_generated = config['to_generate_data']
-    p_gen = config['generator_params']
-    a = p_gen['a']
-    b = p_gen['b']
-    batch_size = outputs.size()[0]  
-    mul_par = outputs[:, 1].narrow(0, 1, batch_size - 1).view((batch_size - 1, -1))
-    adit_par = outputs[:, 2].narrow(0, 1, batch_size - 1).view((batch_size - 1, -1))
-    aux_error = aux_loss(mul_par, adit_par, outputs, x_batch, config)
-    if is_debug:
-        print(f"Z shape{mul_par.shape}")
-        original_a = np.full_like(aux_error.detach().numpy(), a)
-        original_a = torch.from_numpy(original_a)
-        original_b = np.full_like(aux_error.detach().numpy(), b)
-        original_b = torch.from_numpy(original_b)
 
-        x = aux_loss(original_a, original_b, labels, x_batch, config)
+    x_norm = config['x_norm']
+    y_norm = config['y_norm']
 
-        print(f"goal {x}")
-        print(f"is {aux_error}")
-        while (True):
-            pass
-#     f2_arg = torch.acos(x_batch[-1])
-# #     print(f"X shape: {f2_arg.shape}")
-# #     print(f"Y shape {outputs.shape}")
-#     #f2_arg_k = f2_arg.narrow(0, 1, f2_arg.shape[0] - 1)
-#     f2_arg_k_minus_1 = f2_arg.narrow(0, 0, batch_size - 1)
-# #     print(f"f2_arg_k_m1 shape: {f2_arg_k_minus_1.shape}")
-#     #d_t = f2_arg_k - f2_arg_k_minus_1
-#     z = torch.mean(outputs[:, 1])
-# #     z = z.view((z.shape[0], -1))
-#     h = math.pi / 30
-# #     print(f"z shape{z.shape}")
-# #     print(f"prec shape {(z * f2_arg_k_minus_1).shape}")
-#     dY = torch.sin(z * f2_arg_k_minus_1) * h
-#     print(f"dY shape {dY.shape}")
-# #     print(tprch.sum(torch.abs(
-# #         (y_k_hat - labels[:, 0].narrow(0,0, batch_size - 1))
-#     y_k_minus_1 = outputs.narrow(0, 0, batch_size - 1)
-#     y_k_hat = y_k_minus_1 + dY
-#     y_k = outputs.narrow(0,1,batch_size-1)
-#     error_z = y_k_hat - y_k
-#     error_z = torch.abs(error_z)
-#     error_z = torch.sum(error_z)
-    
-    #y_k_minus_1 = outputs.na
-#     print(x_batch[-1].detach().numpy().shape)
-    
-#     print("Out shape")
-#     print(outputs.shape)
-#     outputs = F.log_softmax(outputs, dim=1)   # compute the log of softmax values
-    
-#     outputs = torch.abs(outputs - labels)   # compute the log of softmax values
-#     print(outputs.shape)
-    #outputs = torch.abs(outputs - labels)
-    residuals = torch.abs(outputs[:, 0] - labels[:, 0])
-    #residuals2 = np.arccos()
-    # z = 3
-    
-#     z = outputs
-#     residuals += torch.abs(outputs[:, 1] - 1)
-    return torch.sum(residuals) + aux_error
+    outputs_denorm = outputs * y_norm
+    labels_denorm = labels * y_norm
+    x_batch_denorm = x_batch * x_norm
+
+    batch_size = outputs.size()[0]
+
+    dy_observed = labels_denorm[:, 0].narrow(0, 1, batch_size - 1) - labels_denorm[:, 0].narrow(0, 0, batch_size - 1)
+    residuals = (outputs[:, 0] - labels[:, 0]).view((batch_size - 1, -1))
+    residuals *= dy_observed
+    residuals = torch.abs(residuals)
+
+
+    dy_observed = dy_observed.narrow(0, 1, batch_size - 1).view((batch_size - 1, -1))
+
+    E = torch.sum(residuals)
+
+#       AUX _ PART
+
+    # todo replace with cumdiff
+    # todo make better unpacking way for parameters
+    y_k_m1 = outputs_denorm[:, 0].narrow(0, 0, batch_size - 1).view((batch_size - 1, -1))
+
+    v_a = x_batch_denorm[-1].narrow(0, 1, batch_size - 1)
+    par_1 = outputs[:, 1].narrow(0,0,batch_size-1).view((batch_size-1, -1))
+    par_2 = outputs[:, 2].narrow(0,0,batch_size-1).view((batch_size-1, -1))
+
+
+    sparse_data_step = config['data_params']['leave_nth']
+    d_t = 0.01 * (sparse_data_step-2)  # todo check optimal  # sampling time times droprate
+
+    parameters = {
+        'y_k_m1': y_k_m1,  # time series previous steps
+        'Kt': 0.001,  # motor torque constant
+        'Kb': 0.01,  # emf constant
+        'v_a': v_a,  # voltage, governing signal
+        'La': torch.mean(par_1),  # armature resistance
+        'Ra': torch.mean(par_2),  # armature inductiveness
+        'd_t': d_t  # timestamp difference, aka integration step
+    }
+
+    dy_predicted = (parameters)
+
+    error_aux = 0
+    const_loss = 0
+    dy_observed = labels_denorm[:, 0].narrow(0, 1, batch_size - 1) - labels_denorm[:, 0].narrow(0, 0, batch_size - 1)
+
+    dy_observed = dy_observed.view((batch_size - 1, -1))
+
+    aux_residuals = dy_predicted - dy_observed
+    aux_residuals *= dy_observed  # using them as weighting coefficients
+    # todo try when source is not perfect labels.
+    # aux_residuals /= y_norm  # to facilitate convergence on tiny residuals
+
+    reduced_error = torch.sum(torch.abs(aux_residuals))
+
+    aux_error = reduced_error + torch.log(reduced_error)
+
+    par_1_mean = torch.mean(par_1)
+    par_2_mean = torch.mean(par_2)
+    eps = 0.01
+
+    if par_1_mean > 0 + eps and par_2_mean > 0 + eps:
+        # todo check improvenents for it
+        # error_aux += torch.log(aux_error)  # in order to increase curvature of loss fn
+        error_aux += aux_error
+    else:
+        error_aux += torch.abs(torch.min(par_1_mean, par_2_mean) - eps)  # because those parameters are strictly positive phisical parameters
+
+    const_loss_1 = par_1.var()
+    const_loss += const_loss_1
+    const_loss_2 = par_2.var()
+    const_loss += const_loss_2
+
+#     /  AUX _ PART
+
+
+    return E, error_aux, const_loss
