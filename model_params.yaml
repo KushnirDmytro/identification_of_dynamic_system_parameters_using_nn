@@ -3,7 +3,7 @@ data_params:
     mat_file: 'DC_motor_simulation/res.mat'
     leave_nth: 13 #KD: choosing simple value to avoid systematic error
     test_size: 0.3
-    use_part_of_data: 1.0
+    use_part_of_data: 0.3
 network_params:
     #input_size: 128
     input_size: 64

@@ -27,6 +27,23 @@ def prognose_dy(par):
     return d_y
 
 
+def core_loss(outputs, labels):
+    dy_observed = labels[1:] - labels[0:-1]  # used here exclusively for weights
+
+    residuals = (outputs - labels)[:-1]
+    residuals = (residuals * 0.001 + residuals * dy_observed).unsqueeze(dim=1)
+    loss = residuals.t().mm(residuals)  # representing squeare and reduce sum simultaniusly
+    return loss
+
+def aux_loss():
+    pass
+
+def const_param_loss(pars):
+    const_loss = np.zeros(len(pars)) #  explicit storage done for debugging and visualising purposes
+    for i, par in enumerate(pars):
+        a = par.var()
+        const_loss[i] = par.var()
+    return np.sum(const_loss)
 
 def myLoss(outputs, labels, x_batch, config):
 
@@ -39,15 +56,8 @@ def myLoss(outputs, labels, x_batch, config):
 
     batch_size = outputs.size()[0]
 
-    dy_observed = labels_denorm[:, 0].narrow(0, 1, batch_size - 1) - labels_denorm[:, 0].narrow(0, 0, batch_size - 1)
-    residuals = (outputs[:, 0] - labels[:, 0]).view((batch_size - 1, -1))
-    residuals *= dy_observed
-    residuals = torch.abs(residuals)
 
-
-    dy_observed = dy_observed.narrow(0, 1, batch_size - 1).view((batch_size - 1, -1))
-
-    E = torch.sum(residuals)
+    E = core_loss(outputs=outputs_denorm[:, 0], labels=labels_denorm[:,0])
 
 #       AUX _ PART
 
@@ -68,25 +78,22 @@ def myLoss(outputs, labels, x_batch, config):
         'Kt': 0.001,  # motor torque constant
         'Kb': 0.01,  # emf constant
         'v_a': v_a,  # voltage, governing signal
-        'La': torch.mean(par_1),  # armature resistance
-        'Ra': torch.mean(par_2),  # armature inductiveness
+        'La': par_1,  # armature resistance
+        'Ra': par_2,  # armature inductiveness
         'd_t': d_t  # timestamp difference, aka integration step
     }
 
-    dy_predicted = (parameters)
+    dy_predicted = prognose_dy(parameters)
 
     error_aux = 0
     const_loss = 0
     dy_observed = labels_denorm[:, 0].narrow(0, 1, batch_size - 1) - labels_denorm[:, 0].narrow(0, 0, batch_size - 1)
 
     dy_observed = dy_observed.view((batch_size - 1, -1))
-
     aux_residuals = dy_predicted - dy_observed
     aux_residuals *= dy_observed  # using them as weighting coefficients
-    # todo try when source is not perfect labels.
-    # aux_residuals /= y_norm  # to facilitate convergence on tiny residuals
 
-    reduced_error = torch.sum(torch.abs(aux_residuals))
+    reduced_error = aux_residuals.t().mm(aux_residuals)
 
     aux_error = reduced_error + torch.log(reduced_error)
 
@@ -101,10 +108,7 @@ def myLoss(outputs, labels, x_batch, config):
     else:
         error_aux += torch.abs(torch.min(par_1_mean, par_2_mean) - eps)  # because those parameters are strictly positive phisical parameters
 
-    const_loss_1 = par_1.var()
-    const_loss += const_loss_1
-    const_loss_2 = par_2.var()
-    const_loss += const_loss_2
+    const_loss = const_param_loss(pars = [par_1, par_2])
 
 #     /  AUX _ PART
 
