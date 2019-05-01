@@ -19,16 +19,18 @@ def init_logger(config):
                         datefmt='%Y-%m-%d %H:%M:%S')
     print(f"logger inited to file [{logfile}]")
     
-def plot_shared_scale(plot_requests):
+def plot_shared_scale(plot_requests, title = None):
     for d, l in plot_requests:
         plt.plot(d, label = l)
     plt.legend()
+    plt.title(title)
     plt.show()
     
-def plot_multiscale(plot_requests):
+def plot_multiscale(plot_requests, title = None):
     fig, ax = plt.subplots()
     # Twin the x-axis twice to make independent y-axes.
     for i, req in enumerate(plot_requests):
         d, c = req
         ax.twinx().plot(d, color = c)
+    plt.title(title)
     plt.show()
