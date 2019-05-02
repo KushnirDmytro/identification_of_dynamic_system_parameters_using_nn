@@ -84,7 +84,6 @@ class TimeSeriesDataset(Dataset):
         for i in range(1,retrospective_steps+1):
             x_sliding.append(x[i:-(retrospective_steps+1-i)])
         y = y[retrospective_steps:]
-        # y = np.hstack([y] * out_dim)
         print(f"stacked Y shape  {y.shape}")
         self.x = torch.from_numpy(np.array(x_sliding)).type(torch.Tensor)
         self.y = torch.from_numpy(y).type(torch.Tensor)

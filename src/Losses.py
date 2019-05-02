@@ -29,18 +29,23 @@ def prognose_dy(par):
 
 def core_loss(outputs, labels, config):
 
-    dy_observed = torch.abs(labels[1:] - labels[:-1]) # used here exclusively for weights
+    dy_observed = (labels[1:] - labels[:-1]).abs() # used here exclusively for weights
     only_active_dy = torch.where(dy_observed > config['train_params']['aux']['steady_state_threshold'],
                                  dy_observed,
                                  torch.zeros_like(dy_observed))
 
     active_indexes = only_active_dy.nonzero()[:, 0]
-    nonzero_mean = dy_observed[active_indexes].mean()
-    w = dy_observed + nonzero_mean  # use some weights to balance steady state error
+    # nonzero_mean = dy_observed[active_indexes].mean()
+    # nonzero_max = dy_observed[active_indexes].mean()
+    mx = dy_observed.max() / 5
+    w = dy_observed + mx  # use some weights to balance steady state error
 
 
-    residuals = (outputs - labels)[:-1].unsqueeze(1)
-    r = residuals.t().mm(residuals) / residuals.shape[0]
+    residuals = ((outputs - labels)[:-1] * w).unsqueeze(1)
+    # residuals = (residuals * w)#.unsqueeze(dim=1)
+    # r = residuals.abs().sum()
+    r = residuals.t().mm(residuals) / residuals.shape[0] * 10**7
+
 
     # residuals = (residuals * w).unsqueeze(dim=1)
     #
@@ -73,7 +78,7 @@ def aux_loss(inputs, outputs, params, labels, config):
 
         sparse_data_step = config['data_params']['leave_nth']
         integreation_timestep = config['data_params']['integration_step']
-        d_t = integreation_timestep * (sparse_data_step - 2)  # const 2 used manually
+        d_t = integreation_timestep * (sparse_data_step - 1)  # const 2 used manually
 
         parameters = {
             'y_k_m1': y_k_m1,  # time series previous steps
@@ -96,7 +101,7 @@ def aux_loss(inputs, outputs, params, labels, config):
         # plt.plot(weights.detach().numpy())
         # plt.show()
         weights = (weights - weights.min()) / weights.max()
-        # weights *= 1000
+        weights *= 100
         # plt.plot(weights.detach().numpy())
         # plt.show()
         # using normalisation and standartisation to obtain better convergance
@@ -119,7 +124,7 @@ def const_param_loss(pars):
     for i, par in enumerate(pars):
         # c_loss = par.var() + par.std()
         c_loss = par - par.mean()
-        c_loss = c_loss.t().mm(c_loss) / c_loss.shape[0]
+        c_loss = c_loss.t().mm(c_loss) #/ c_loss.shape[0]
         const_loss[i] = c_loss # + c_loss.log()
     return const_loss.sum()
 
@@ -147,4 +152,4 @@ def myLoss(outputs, labels, x_batch, config):
 
     const_loss = const_param_loss(pars = [par_1, par_2])
 
-    return E , aux, const_loss
+    return E*0 , aux, const_loss

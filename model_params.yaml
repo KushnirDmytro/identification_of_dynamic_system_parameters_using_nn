@@ -12,13 +12,14 @@ network_params:
 # If `per_element` is True, then LSTM reads in one timestep at a time.
     per_element: True
 # size of hidden layers
-    hidden_size: 16
+    hidden_size: 32
     output_dim: 3
-    num_layers: 2
+    num_layers: 1
     dtype: torch.float
 train_params:
-    drop_lr_each: 10
-    lr_drop_rate: 10
+    auto_loss: True
+    drop_lr_each: 5
+    lr_drop_rate: 3
     learning_rate: 0.001
     num_epochs: 30
     batch_size: 1024
