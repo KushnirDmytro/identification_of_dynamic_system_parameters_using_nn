@@ -12,22 +12,38 @@ network_params:
 # If `per_element` is True, then LSTM reads in one timestep at a time.
     per_element: True
 # size of hidden layers
-    hidden_size: 32
+    hidden_size: 16
     output_dim: 3
-    num_layers: 1
+    num_layers: 2
     dtype: torch.float
 train_params:
+    optimizer:
+        loss_fn: mse
+        reduction: sum
+        optimizer: adam
+        weight_decay: 0
+        learning_rate: 0.001
+    lr_scheduler:
+        early_stop_order: -7
+        threshold: 0.005
+        lr_drop: 0.3
+        patience: 2
+        cooldown: 3
+    
     auto_loss: True
-    drop_lr_each: 5
-    lr_drop_rate: 3
-    learning_rate: 0.001
-    num_epochs: 30
+    
+    
+    
+    num_epochs: 150
     batch_size: 1024
-    loss_fn: mse
-    reduction: sum
-    optimizer: adam
-    aux:
-        steady_state_threshold: 0.0001
+    
+    core_loss:
+        part_of_max_for_const: 0.2
+        scaling_order: 5
+    aux_loss:
+        part_of_max_for_const: 0.3
+        scaling_order: 5
+        steady_state_threshold: 0.001
 exp_path: "only_batches"
 is_debug: False
 to_generate_data: False
