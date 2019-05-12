@@ -103,16 +103,11 @@ def aux_loss(inputs, outputs, params, labels, config):
         # from matplotlib import pyplot as plt
 
         weights = dy_observed.abs()
-        # plt.plot(weights.detach().numpy())
-        # plt.show()
         weights -= weights.min()
         weights /= (weights.max() - weights.min())
         stabilizing_part = config['train_params']['aux_loss']['part_of_max_for_const']
         mx = weights.max() * stabilizing_part
-        weights += mx #KD change
-        # weights *= 200
-        # plt.plot(weights.detach().numpy())
-        # plt.show()
+        weights += mx
         # using normalisation and standartisation to obtain better convergance
         # along values with marginal 0 value of dy
 
@@ -138,62 +133,58 @@ def aux_loss_jordan(inputs, outputs, params, labels, config):
     par_2_mean = par_2
 
     eps = 0.01
+    y_k_m1 = outputs[:-1]
 
+    v_a = inputs[-1][1:]
+
+    sparse_data_step = config['data_params']['leave_nth']
+    integreation_timestep = config['data_params']['integration_step']
+    d_t = integreation_timestep * (sparse_data_step - 2)  # const 2 used manually
+
+    parameters = {
+        'y_k_m1': y_k_m1,  # time series previous steps
+        'Kt': 0.001,  # motor torque constant
+        'Kb': 0.01,  # emf constant
+        'v_a': v_a,  # voltage, governing signal
+        'La': par_1,  # armature resistance
+        'Ra': par_2,  # armature inductiveness
+        # if use not means but whole timeseries instead, we'll have a problem, because model will try to fit
+        # parameter value for piece of train data and creating a reliable const loss will be a challanging task
+        'd_t': d_t  # timestamp difference, aka integration step
+    }
+
+    dy_predicted = prognose_dy(parameters)
+
+    dy_observed = labels[1:] - labels[:-1]
+    # from matplotlib import pyplot as plt
+
+    weights = dy_observed.abs()
+    weights -= weights.min()
+    weights /= (weights.max() - weights.min())
+    stabilizing_part = config['train_params']['aux_loss']['part_of_max_for_const']
+    mx = weights.max() * stabilizing_part
+    weights += mx
+    # using normalisation to obtain better convergance
+    # along values with marginal 0 value of dy
+
+    aux_residuals = dy_predicted - dy_observed
+    aux_residuals *= weights
     if par_1_mean > 0 + eps and par_2_mean > 0 + eps:
 
-        y_k_m1 = outputs[:-1]
-
-        v_a = inputs[-1][1:]
-
-        sparse_data_step = config['data_params']['leave_nth']
-        integreation_timestep = config['data_params']['integration_step']
-        d_t = integreation_timestep * (sparse_data_step - 2)  # const 2 used manually
-
-        parameters = {
-            'y_k_m1': y_k_m1,  # time series previous steps
-            'Kt': 0.001,  # motor torque constant
-            'Kb': 0.01,  # emf constant
-            'v_a': v_a,  # voltage, governing signal
-            'La': par_1,  # armature resistance
-            'Ra': par_2,  # armature inductiveness
-            # if use not means but whole timeseries instead, we'll have a problem, because model will try to fit
-            # parameter value for piece of train data and creating a reliable const loss will be a challanging task
-            'd_t': d_t  # timestamp difference, aka integration step
-        }
-
-        dy_predicted = prognose_dy(parameters)
-
-        dy_observed = labels[1:] - labels[:-1]
-        # from matplotlib import pyplot as plt
-
-        weights = dy_observed.abs()
-        # plt.plot(weights.detach().numpy())
-        # plt.show()
-        weights -= weights.min()
-        weights /= (weights.max() - weights.min())
-        stabilizing_part = config['train_params']['aux_loss']['part_of_max_for_const']
-        mx = weights.max() * stabilizing_part
-        weights += mx #KD change
-        # weights *= 200
-        # plt.plot(weights.detach().numpy())
-        # plt.show()
-        # using normalisation and standartisation to obtain better convergance
-        # along values with marginal 0 value of dy
-
-        aux_residuals = dy_predicted - dy_observed
-        aux_residuals *= weights  # using dy_observed as weighting coefficients
+        # using dy_observed as weighting coefficients
         # reduced_error = aux_residuals.t().mm(aux_residuals) # / aux_residuals.shape[0]
-        reduced_error = aux_residuals.abs().sum()
+        reduced_error = aux_residuals.abs().sum() + aux_residuals.t().mm(aux_residuals)
 
 
         aux_error = reduced_error  #torch.log(reduced_error)
         # idea is to make this loss on order of magnitude higher then usual loss
 
     else:
-        aux_error = torch.abs(torch.min(par_1_mean,
-                                         par_2_mean) - eps)
+        aux_error = torch.abs(torch.min(par_1_mean, par_2_mean) - eps)
+        print(f'Negative param value penalty {par_1_mean} {par_2_mean}')
         # because those parameters are strictly positive physical parameters
-    return aux_error
+    return aux_error, aux_residuals
+
 
 def const_param_loss(pars):
     const_loss = torch.zeros(len(pars)) # explicit storage done for debugging and visualising purposes
@@ -220,14 +211,21 @@ def myLoss_jordan(outputs, jordan, labels, x_batch, config):
                   labels=labels[:, 0],
                   config=config)  # this loss computed on normalized data
 
-    aux = aux_loss_jordan(inputs=x_batch_denorm,
+    aux, aux_residuals = aux_loss_jordan(inputs=x_batch_denorm,
                 outputs=outputs_denorm[:, 0].unsqueeze(dim=1),
                 params=[par_1, par_2],
                 labels=labels_denorm[:, 0].unsqueeze(dim=1),
                 config=config)
 
+    jordan_loss, jordan_aux_residuals = aux_loss_jordan(inputs=x_batch_denorm,
+                                         outputs=labels_denorm[:, 0].unsqueeze(dim=1),
+                                         params=[par_1, par_2],
+                                         labels=labels_denorm[:, 0].unsqueeze(dim=1),
+                                         config=config)
 
-    return E, aux
+
+
+    return E, aux, aux_residuals, jordan_loss
 
 def myLoss(outputs, labels, x_batch, config):
 

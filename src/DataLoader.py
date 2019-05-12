@@ -84,7 +84,7 @@ class TimeSeriesDataset(Dataset):
         x_sliding = []  # determines number of steps for retrospective view
         for i in range(1, self.retrospective_steps+1):
             x_sliding.append(x[i:-(self.retrospective_steps+1-i)])
-        y = y[self.retrospective_steps-1:]
+        y = y[self.retrospective_steps:]
 
         print(f"stacked Y shape  {y.shape}")
 
