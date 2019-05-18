@@ -1,7 +1,36 @@
+jordan_path: 'jordan.pt'
+vanilla_path: 'vanilla.pt'
 data_params:
     need_normalize: True
-    mat_file: 'DC_motor_simulation/res.mat'
+    mat_file: 'DC_motor_simulation/train_3_parameters.mat'
+#     specific_data_source: 'DC_motor_simulation/res_hyster_and_eddy_sig_duration_001_01.mat'
+    specific_data_source:   'DC_motor_simulation/test_3_parameters_d_001_2.mat'
+    specific_data_sources: 
+        sin: 'DC_motor_simulation/test_3_parameters_5_15_1_20_additive_sin.mat'
+        noice: 'DC_motor_simulation/test_3_parameters_5_15_1_20_additive_noise.mat'
+        range: 'DC_motor_simulation/test_3_parameters_v_0_33.mat'
+        dur: 'DC_motor_simulation/test_3_parameters_d_001_2.mat'
+    tested_models: [
+#     'jordan_indep_estimate_1l 2h 1b_18_May_04_09PM.pt',
+#     'jordan_full_1l 2h 1b_18_May_04_09PM.pt',
+#     'jordan_full_blind_1l 2h 1b_18_May_09_17PM.pt',
+#     'jordan_full_blind_lower_const_param_1l 2h 1b_18_May_09_12PM.pt',
+#     'jordan_vanilla_3_1l_2n_1b_18_May_09_36PM.pt', # now parameters are the same as full loss
+#     'jordan_full_blind_lower_const_param_1l 2h 1b_18_May_09_56PM.pt',
+#     'jordan_indep_estimate_1l 2h 1b_18_May_10_26PM.pt',
+#     'jordan_vanilla_3_1l_2n_1b_18_May_10_26PM.pt',
+    
+    'jordan_indep_estimate_1l 2h 1b_18_May_11_42PM.pt',
+    'jordan_full_blind_lower_cp_002_1l 2h 1b_18_May_11_42PM.pt',
+    'jordan_vanilla_3_1l_2n_1b_18_May_11_42PM.pt',
+    'jordan_full_blind_par_004_param_1l 2h 1b_19_May_12_20AM.pt',
+    'jordan_full_blind_par_007_1l 2h 1b_19_May_12_20AM.pt',
+    'jordan_full_blind_par_004_output_weights_1l 2h 1b_19_May_01_29AM.pt',
+    'jordan_vanilla_label_loss_par_004_3_1l_2n_1b_19_May_01_25AM.pt',
+    'jordan_full_blind_par_const_004_label_loss_1l 2h 1b_19_May_01_24AM.pt'
+    ]
     leave_nth: 13 #KD: choosing simple value to avoid systematic error
+    best_discrete_k: 3
     integration_step: 0.01
     test_size: 0.3
     use_part_of_data: 1.0
@@ -12,10 +41,12 @@ network_params:
 # If `per_element` is True, then LSTM reads in one timestep at a time.
     per_element: True
 # size of hidden layers
-    hidden_size: 16
-    output_dim: 3
+    jordan_nodes: 3
+    hidden_size: 2
+    output_dim: 1
     num_layers: 1
     dtype: torch.float
+    bias: True
 train_params:
     optimizer:
         loss_fn: mse
@@ -36,9 +67,9 @@ train_params:
             
     lr_scheduler:
         early_stop_order: -8
-        threshold: 0.001
-        lr_drop: 0.3
-        patience: 4
+        threshold: 0.01
+        lr_drop: 0.4
+        patience: 60
         cooldown: 4
           
         
@@ -46,16 +77,21 @@ train_params:
     
     
     
-    num_epochs: 150
+    num_epochs: 80
+#     batch_size: 1024
     batch_size: 1024
     
+    
     core_loss:
-        part_of_max_for_const: 0.2
-        scaling_order: 2
+        part_of_max_for_const: 0.07
+#         part_of_max_for_const: 0.05
+        scaling_order: 4
     aux_loss:
-        part_of_max_for_const: 0.05
-        scaling_order: 7
+        part_of_max_for_const: 0.07
+        scaling_order: 4
         steady_state_threshold: 0.001
+    jordan_loss: 
+        scaling_order: 6
 exp_path: "only_batches"
 is_debug: False
 to_generate_data: False

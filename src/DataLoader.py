@@ -12,10 +12,11 @@ class TimeSeriesDataset(Dataset):
     """Loads dataset from matlab file and provides batching interface"""
 
     def __init__(self, 
-                 config, 
+                 config,
                  partition,
                  logging,
-                 transform=None):
+                 transform=None,
+                 specific_data_source=None):
         """
         Args:
             config (dict): configurations dict
@@ -28,7 +29,12 @@ class TimeSeriesDataset(Dataset):
         # TODO asserts and validations of provided params
         self.to_generate_data = config['to_generate_data']
         self.p_data = config['data_params']
-        self.mat_file = self.p_data['mat_file']
+
+        if specific_data_source:
+            self.mat_file = self.p_data[specific_data_source]
+        else:
+            self.mat_file = self.p_data['mat_file']
+        print(f"loading from [{self.mat_file}]")
         self.p_net = config['network_params']
         self.retrospective_steps = self.p_net['retrospective_steps']
         self.out_dim = self.p_net['output_dim']
@@ -54,7 +60,7 @@ class TimeSeriesDataset(Dataset):
                                                                          return_norm=True)
             print(f"X normalized, norms: {self.x_norms}")
             print(f"x shape {self.x.shape}")
-            print(f"x_normalized shaoe {x_normalized.shape}")
+            print(f"x_normalized shape {x_normalized.shape}")
             plt.plot(self.x)
             plt.title('x original')
             plt.show()
